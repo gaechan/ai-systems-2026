@@ -3,8 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  site: 'https://halla-ai.github.io',
-  base: '/ai-engineering-2026',
+  site: 'https://ai-engineering-2026.halla.ai',
   integrations: [
     starlight({
       title: 'AI 엔지니어링 2026',
