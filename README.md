@@ -2,8 +2,8 @@
 
 제주한라대학교 인공지능학과 4학년 강의 사이트 — **에이전틱 워크플로우와 하네스 엔지니어링**
 
-**사이트**: [ai-engineering-2026.halla.ai](https://ai-engineering-2026.halla.ai)
-**저장소**: [github.com/halla-ai/ai-engineering-2026](https://github.com/halla-ai/ai-engineering-2026)
+**사이트**: [ai-systems-2026.halla.ai](https://ai-systems-2026.halla.ai)
+**저장소**: [github.com/halla-ai/ai-systems-2026](https://github.com/halla-ai/ai-systems-2026)
 
 ---
 
@@ -73,7 +73,7 @@ assignments/lab-XX/[학번]/
 assignments/week-XX/[학번]/
 ```
 
-자세한 방법 → [기여 가이드](https://ai-engineering-2026.halla.ai/contribute)
+자세한 방법 → [기여 가이드](https://ai-systems-2026.halla.ai/contribute)
 
 ---
 

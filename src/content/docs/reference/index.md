@@ -23,4 +23,4 @@ description: AI 엔지니어링 2026 강의 참고자료 모음
 - [NVIDIA MIG 가이드](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/)
 
 ### 강의 저장소
-- [GitHub: halla-ai/ai-engineering-2026](https://github.com/halla-ai/ai-engineering-2026)
+- [GitHub: halla-ai/ai-systems-2026](https://github.com/halla-ai/ai-systems-2026)

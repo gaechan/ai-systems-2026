@@ -21,8 +21,8 @@ description: 강의 사이트에 기여하는 방법 — Fork, 수정, PR 가이
 # 1. GitHub에서 Fork (오른쪽 상단 Fork 버튼)
 
 # 2. 로컬 클론
-git clone https://github.com/[YOUR_USERNAME]/ai-engineering-2026.git
-cd ai-engineering-2026
+git clone https://github.com/[YOUR_USERNAME]/ai-systems-2026.git
+cd ai-systems-2026
 
 # 3. 의존성 설치
 npm install

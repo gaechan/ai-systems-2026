@@ -15,7 +15,7 @@ lastUpdated: 2026-03-03
 | **강의 시수** | 주 3시간 × 16주 |
 | **담당교수** | 이영준 (yj.lee@chu.ac.kr) |
 | **강의실** | AI 실습실 (DGX H100 클러스터) |
-| **강의 사이트** | https://halla-ai.github.io/ai-engineering-2026/ |
+| **강의 사이트** | https://halla-ai.github.io/ai-systems-2026/ |
 
 ## 강의 개요
 
@@ -108,4 +108,4 @@ lastUpdated: 2026-03-03
 ## 문의
 
 강의 관련 문의는 GitHub Issue 또는 이메일(yj.lee@chu.ac.kr)로 연락주세요.
-수업 자료 오류 발견 시 [GitHub Issue](https://github.com/halla-ai/ai-engineering-2026/issues)를 통해 신고해 주세요.
+수업 자료 오류 발견 시 [GitHub Issue](https://github.com/halla-ai/ai-systems-2026/issues)를 통해 신고해 주세요.

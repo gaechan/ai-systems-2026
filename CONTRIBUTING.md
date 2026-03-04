@@ -9,8 +9,8 @@ AI 엔지니어링 2026 강의 사이트에 기여해 주셔서 감사합니다!
 # 1. 저장소 Fork (GitHub에서 우측 상단 Fork 버튼 클릭)
 
 # 2. 로컬 클론
-git clone https://github.com/[YOUR_USERNAME]/ai-engineering-2026.git
-cd ai-engineering-2026
+git clone https://github.com/[YOUR_USERNAME]/ai-systems-2026.git
+cd ai-systems-2026
 
 # 3. 의존성 설치
 npm install
@@ -51,7 +51,7 @@ assignments/
 ## 오류 신고
 
 강의 자료에서 오류를 발견했나요?
-[GitHub Issue](https://github.com/halla-ai/ai-engineering-2026/issues/new?template=content-error.md)를 통해 신고해 주세요.
+[GitHub Issue](https://github.com/halla-ai/ai-systems-2026/issues/new?template=content-error.md)를 통해 신고해 주세요.
 
 ## 궁금한 점
 

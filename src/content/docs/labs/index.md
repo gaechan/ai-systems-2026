@@ -11,7 +11,7 @@ description: AI 엔지니어링 2026 — 12개 실습과제 안내
 
 ```bash
 # 1. 저장소 Fork 후 클론
-git clone https://github.com/[YOUR_USERNAME]/ai-engineering-2026.git
+git clone https://github.com/[YOUR_USERNAME]/ai-systems-2026.git
 
 # 2. 과제 폴더에 작업
 mkdir -p assignments/lab-01/[학번]

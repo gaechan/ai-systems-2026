@@ -51,7 +51,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: [학번]-experiment
-  namespace: ai-engineering
+  namespace: ai-systems
 spec:
   template:
     spec:
@@ -76,13 +76,13 @@ spec:
 
 ```bash
 # Job 제출
-kubectl apply -f job.yaml -n ai-engineering
+kubectl apply -f job.yaml -n ai-systems
 
 # 로그 확인
-kubectl logs -f job/[학번]-experiment -n ai-engineering
+kubectl logs -f job/[학번]-experiment -n ai-systems
 
 # Job 삭제
-kubectl delete job [학번]-experiment -n ai-engineering
+kubectl delete job [학번]-experiment -n ai-systems
 ```
 
 ### 스토리지
@@ -119,4 +119,4 @@ squeue -u [학번]
 
 ### 문의
 
-기술적 문제는 AI 실습실 관리자 (lab@chu.ac.kr) 또는 [GitHub Issue](https://github.com/halla-ai/ai-engineering-2026/issues)
+기술적 문제는 AI 실습실 관리자 (lab@chu.ac.kr) 또는 [GitHub Issue](https://github.com/halla-ai/ai-systems-2026/issues)

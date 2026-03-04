@@ -14,4 +14,4 @@ description: Ralphthon 캡스톤 팀별 제출 현황
 ---
 
 > 이 페이지는 교수가 관리합니다. 학생은 직접 수정하지 마세요.
-> 제출 현황 오류는 [GitHub Issue](https://github.com/halla-ai/ai-engineering-2026/issues)로 문의.
+> 제출 현황 오류는 [GitHub Issue](https://github.com/halla-ai/ai-systems-2026/issues)로 문의.
