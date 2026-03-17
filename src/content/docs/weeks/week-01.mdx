@@ -350,75 +350,32 @@ AI 코딩 CLI 도구를 설치하고, DGX H100 서버에 접속하여 첫 번째
    sudo apt-get install -y nodejs
    ```
 
-2. **AI 코딩 CLI 도구 설치**
+2. **AI 코딩 CLI 도구 설치 → API 키 설정 → 실행 테스트**
 
    <Tabs>
      <TabItem label="Claude Code (권장)">
        ```bash
-       pnpm add -g @anthropic-ai/claude-code
-       claude --version
-       ```
-     </TabItem>
-     <TabItem label="Gemini CLI">
-       ```bash
-       pnpm add -g @google/gemini-cli
-       gemini --version
-       ```
-     </TabItem>
-     <TabItem label="Codex CLI">
-       ```bash
-       pnpm add -g @openai/codex
-       codex --version
-       ```
-     </TabItem>
-     <TabItem label="OpenCode">
-       ```bash
-       brew install opencode
-       ```
-     </TabItem>
-   </Tabs>
+       # 1. 설치 (둘 중 하나 선택)
+       brew install claude-code                          # Homebrew (권장)
+       pnpm add -g @anthropic-ai/claude-code             # pnpm
 
-   <Aside type="note">도구별 상세 비교는 [AI 코딩 도구 선택 가이드](/reference/tool-selection) 참조.</Aside>
-
-3. **API 키 설정**
-
-   <Tabs>
-     <TabItem label="Claude Code">
-       ```bash
+       # 2. API 키 설정 (~/.bashrc 또는 ~/.zshrc에 추가)
        export ANTHROPIC_API_KEY="sk-ant-..."
-       # ~/.bashrc 또는 ~/.zshrc에 추가
-       ```
-     </TabItem>
-     <TabItem label="Gemini CLI">
-       ```bash
-       export GEMINI_API_KEY="..."
-       # 또는 첫 실행 시 브라우저 OAuth 인증
-       ```
-     </TabItem>
-     <TabItem label="Codex CLI">
-       ```bash
-       export OPENAI_API_KEY="sk-..."
-       ```
-     </TabItem>
-     <TabItem label="OpenCode">
-       ```bash
-       # 사용할 모델 제공자에 따라 설정
-       export OPENAI_API_KEY="sk-..."  # OpenAI 모델 사용 시
-       ```
-     </TabItem>
-   </Tabs>
 
-4. **첫 번째 실행 테스트**
-
-   <Tabs>
-     <TabItem label="Claude Code">
-       ```bash
+       # 3. 실행 테스트
        mkdir ~/test-project && cd ~/test-project
        claude "Hello! 이 디렉토리에 간단한 Python hello world 파일을 만들어줘."
        ```
      </TabItem>
      <TabItem label="Gemini CLI">
        ```bash
+       # 1. 설치
+       pnpm add -g @google/gemini-cli
+
+       # 2. API 키 설정 (또는 첫 실행 시 브라우저 OAuth 인증)
+       export GEMINI_API_KEY="..."
+
+       # 3. 실행 테스트
        mkdir ~/test-project && cd ~/test-project
        gemini
        # 대화형 모드에서: "이 디렉토리에 간단한 Python hello world 파일을 만들어줘."
@@ -426,18 +383,34 @@ AI 코딩 CLI 도구를 설치하고, DGX H100 서버에 접속하여 첫 번째
      </TabItem>
      <TabItem label="Codex CLI">
        ```bash
+       # 1. 설치
+       pnpm add -g @openai/codex
+
+       # 2. API 키 설정
+       export OPENAI_API_KEY="sk-..."
+
+       # 3. 실행 테스트
        mkdir ~/test-project && cd ~/test-project
        codex "이 디렉토리에 간단한 Python hello world 파일을 만들어줘."
        ```
      </TabItem>
      <TabItem label="OpenCode">
        ```bash
+       # 1. 설치
+       brew install opencode
+
+       # 2. API 키 설정 (사용할 모델 제공자에 따라 설정)
+       export OPENAI_API_KEY="sk-..."  # OpenAI 모델 사용 시
+
+       # 3. 실행 테스트
        mkdir ~/test-project && cd ~/test-project
        opencode
        # TUI에서: "이 디렉토리에 간단한 Python hello world 파일을 만들어줘."
        ```
      </TabItem>
    </Tabs>
+
+   <Aside type="note">도구별 상세 비교는 [AI 코딩 도구 선택 가이드](/reference/tool-selection) 참조.</Aside>
 
 5. **관찰 과제: AI의 자율적 결정 기록**
 
