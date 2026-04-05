@@ -356,6 +356,16 @@ MCP의 JSON-RPC 2.0에는 엄격한 규칙이 있다:
 
 위 그림은 두 전송 방식의 토폴로지 차이를 보여준다. 로컬 환경에서는 Host 내부의 Client가 Server를 서브프로세스로 실행하고 stdio로 통신한다. 원격 환경에서는 네트워크 경계를 넘어 SSE(Server-Sent Events)로 통신하며, 이 경계에 거버넌스 게이트웨이가 위치할 수 있다.
 
+<Aside type="tip" title="Claude Code 내부에서는...">
+Claude Code는 MCP를 6종 transport(Stdio, SSE, HTTP, WebSocket, SDK, ClaudeAiProxy)로 지원하며, 서버 lifecycle을 상태머신(`Configured → Initializing → Connected → In Use → Terminated`)으로 관리한다.
+
+- **Degraded Mode**: 일부 MCP 서버가 실패해도 나머지는 정상 운영 — startup/handshake/config/partial로 장애를 분류
+- **도구 네이밍**: `mcp__{server}__{tool}` 규칙으로 Base 도구와 이름 충돌 방지
+- **FNV-1a 해싱**: 설정 파일 3레벨(user/project/local)에 같은 서버가 중복 정의되어도 1회만 연결
+
+→ 상세: [참고자료 > Claude Code 내부 구조](/reference/claude-code-internals)
+</Aside>
+
 ---
 
 ### Part 3: MCP 프리미티브 확장 — 서버 + 클라이언트 기능

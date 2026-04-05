@@ -64,6 +64,19 @@ import { Aside, Steps, Tabs, TabItem, Badge, Card, CardGrid } from '@astrojs/sta
 
 ---
 
+<Aside type="tip" title="Claude Code 내부에서는...">
+Claude Code의 Query Engine이 바로 이 루프 원리의 구현체다:
+
+- **턴 루프**: 사용자 메시지 → 도구 호출 → 결과 추가 → 반복 (max 16 iterations). 도구 호출 1회 = 1턴
+- **예산 제어**: `max_turns = 8`, `max_budget_tokens = 2,000` — 무한 루프 방지의 결정론적 경계
+- **세션 lifecycle**: 7단계 부트스트랩(prefetch → query engine loop). 세션 종료 후 `.claude/sessions/`에 JSON 영속화 → 새 세션에서 상태 파일 읽기
+- **TurnResult 7요소**: input, response, tools, permissions, tokens, termination reason — 매 턴의 결과를 구조화하여 캡처
+
+Ralph 루프의 "실행 → 검증 → 재시도"가 이 턴 루프 위에서 돌아간다.
+
+→ 상세: [참고자료 > Claude Code 내부 구조](/reference/claude-code-internals)
+</Aside>
+
 ### Part 1: Test-Time Compute Scaling — 이론적 기반
 
 #### 모델을 키우지 않고 성능을 높이는 법

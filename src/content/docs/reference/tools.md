@@ -123,6 +123,22 @@ claude /loop --stop
   claude /simplify
   ```
 
+#### 내부 구조 — 도구 시스템과 퍼미션
+
+Claude Code 내부에서 도구는 **3-Layer**로 합성된다:
+
+| Layer | 소스 | 설명 |
+|-------|------|------|
+| **Base** | 컴파일 타임 정적 정의 | 40개 빌트인 도구 (Bash, Read, Write, Edit, Glob, Grep, Agent, Skill 등) |
+| **Plugin** | 사용자 설치 확장 | hook 기반 lifecycle (pre/post_tool_use) |
+| **Runtime** | MCP 서버 동적 등록 | `mcp__{server}__{tool}` 네이밍. 서버 연결 시 자동 등록 |
+
+**도구 카테고리**: Shell(2) · File I/O(4) · Search(3) · Web(2) · Agent(2) · Task/Session(6)
+
+**퍼미션 3모드**: ReadOnly(읽기만) → WorkspaceWrite(기본, 워크스페이스 내 쓰기) → DangerFullAccess(전체 접근). 도구마다 필요 퍼미션이 지정되어 있어, 모드에 따라 사용 가능한 도구가 자동으로 필터링된다.
+
+→ 상세: [Claude Code 내부 구조](/reference/claude-code-internals)
+
 > 기능별 상세 설명과 실습 예제는 [4주차](/weeks/week-04/) (루프/worktree), [6주차](/weeks/week-06/) (인스트럭션 튜닝), [7주차](/weeks/week-07/) (멀티에이전트 설계) 참조.
 
 ---

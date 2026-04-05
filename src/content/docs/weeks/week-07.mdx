@@ -38,6 +38,17 @@ import { Aside, Steps, Tabs, TabItem, Badge, Card, CardGrid } from '@astrojs/sta
 | QA Engineer | QA 에이전트 | pytest, diff viewer |
 | DevOps | 배포 에이전트 | Docker, Kubernetes |
 
+<Aside type="tip" title="Claude Code 내부에서는...">
+아래 파이프라인의 기술적 토대가 Claude Code의 **Agent Orchestration** 레이어다:
+
+- **Agent 도구**: 서브에이전트를 별도 프로세스로 스폰. 모델 선택(`sonnet`/`opus`/`haiku`)으로 태스크 복잡도에 맞춰 라우팅
+- **Worktree 격리**: `isolation: "worktree"` 옵션으로 git worktree에서 실행 — 부모 작업 영역에 영향 없음
+- **Task Packet**: 자연어 대신 구조화된 패킷(objective, scope, acceptance_tests, escalation_policy)으로 에이전트에게 작업 지시
+- **독립 컨텍스트**: 서브에이전트는 부모 세션의 히스토리에 접근 불가 — 마이크로서비스 간 명시적 계약(API contract)과 같은 원리
+
+→ 상세: [참고자료 > Claude Code 내부 구조](/reference/claude-code-internals)
+</Aside>
+
 ### 멀티에이전트 파이프라인 아키텍처
 
 <div class="diagram">

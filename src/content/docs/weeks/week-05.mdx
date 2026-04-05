@@ -52,6 +52,19 @@ import { Aside, Steps, Badge, Card, CardGrid } from '@astrojs/starlight/componen
 - 응답이 길어지고 요점을 잃어버림
 </Aside>
 
+<Aside type="tip" title="Claude Code 내부에서는...">
+Claude Code는 Context Rot 방지를 위해 **auto-compaction**을 내장하고 있다:
+
+- **트리거**: 턴 수 > 12 (`compact_after_turns`) 초과 시 자동 압축
+- **알고리즘**: 최근 4개 메시지 보존 + 나머지를 Markdown→plaintext 변환, 중복 도구 결과 제거, 10K 토큰 상한으로 절삭
+- **CLAUDE.md 3레벨 계층**: `~/.claude/CLAUDE.md`(전역) → `<project>/.claude/CLAUDE.md`(프로젝트) → `<workspace>/CLAUDE.md`(로컬). 전체 합산 12,000자 제한
+- **토큰 추적**: input/cache_creation/cache_read/output 4종 토큰을 매 API 호출마다 기록. `/cost`로 실시간 확인
+
+이 메커니즘이 아래에서 다루는 Context Window Wiping의 기술적 토대다.
+
+→ 상세: [참고자료 > Claude Code 내부 구조](/reference/claude-code-internals)
+</Aside>
+
 ### Ralph 루프의 해법: Context Window Wiping
 
 Ralph 루프의 핵심 혁신 중 하나는 **태스크 완료 또는 실패 후 컨텍스트를 완전히 초기화**하는 것이다:

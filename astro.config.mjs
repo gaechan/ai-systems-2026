@@ -139,6 +139,7 @@ export default defineConfig({
             { label: '논문 & 자료', translations: { en: 'Papers & Resources' }, link: '/reference/papers' },
             { label: '용어집', translations: { en: 'Glossary' }, link: '/reference/glossary' },
             { label: '인프라 가이드', translations: { en: 'Infrastructure Guide' }, link: '/reference/infrastructure' },
+            { label: 'Claude Code 내부 구조', translations: { en: 'Claude Code Internals' }, link: '/reference/claude-code-internals' },
           ],
         },
         {

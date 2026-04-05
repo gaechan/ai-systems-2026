@@ -24,6 +24,12 @@ description: AI 시스템 2026 강의 주요 용어 정의
 **Backpressure (백프레셔)**
 : Ralph 루프에서 에이전트 출력이 기준에 맞지 않을 때 시스템이 자동으로 거부하고 재시도를 강제하는 메커니즘. 컴파일러, 타입 체커, 테스트 스위트가 대표적 백프레셔 구성 요소.
 
+**Bootstrap Sequence (부트스트랩 시퀀스)**
+: Claude Code 세션 시작 시 7단계 초기화 과정. prefetch → warning handler → CLI parse → concurrent setup → deferred init → mode routing → query engine loop. FastPath 최적화로 단순 명령은 전체 초기화를 건너뛴다.
+
+**Compaction (컴팩션)**
+: 긴 대화에서 오래된 턴을 요약하여 토큰 예산 내로 압축하는 메커니즘. Claude Code에서는 12턴 초과 시 자동 트리거되며, 최근 4개 메시지를 보존하고 나머지를 plaintext 변환 + 중복 제거로 압축한다.
+
 **Context Rot (컨텍스트 부패)**
 : 장기 실행 에이전트에서 컨텍스트 창이 실패 시도와 오래된 코드로 채워져 추론 품질이 저하되는 현상.
 
@@ -32,6 +38,9 @@ description: AI 시스템 2026 강의 주요 용어 정의
 
 **CUD Operations**
 : Create, Update, Delete 작업. HOTL 거버넌스에서 High Risk로 분류되어 Hard Interrupt가 필요한 작업.
+
+**Degraded Mode (부분 장애 모드)**
+: MCP 서버 일부가 실패해도 나머지가 정상 운영되는 모드. 실패 서버는 startup/handshake/config/partial로 분류되며, 가용한 서버의 도구만 등록하여 계속 작동한다. 마이크로서비스의 circuit breaker 패턴과 동일한 원리.
 
 **DeepSeek V3**
 : DeepSeek의 685B MoE 모델. 37B 활성 파라미터로 수학/추론/코딩 최상위권 성능. 8×H100 급 클러스터 필요.
@@ -90,6 +99,12 @@ description: AI 시스템 2026 강의 주요 용어 정의
 **OBO (On-Behalf-Of)**
 : MCP 서버가 서비스 계정 대신 위임된 사용자/에이전트 ID로 작업하는 인증 패턴. OAuth 2.1 토큰 교환을 통해 "누구를 대신하여" 작업하는지 명시하여, 에이전트 환경에서 발생하는 책임 단절(accountability breakdown) 문제를 해결한다.
 
+**Permission Mode (퍼미션 모드)**
+: Claude Code의 3단계 권한 모드. ReadOnly(읽기만), WorkspaceWrite(워크스페이스 내 쓰기, 기본값), DangerFullAccess(전체 접근). 4중 보안 레이어(도구 은닉 → 도구별 오버라이드 → CLI 프리셋 → Workspace boundary)와 결합하여 에이전트 행동 범위를 결정론적으로 제어한다.
+
+**Query Engine (쿼리 엔진)**
+: Claude Code의 대화 루프 엔진. 사용자 메시지 수신 → 시스템 프롬프트 조립 → API 스트리밍 호출 → 도구 실행 → 결과 추가를 max_turns(기본 8)까지 반복한다. 매 턴마다 TurnResult(input, response, tools, permissions, tokens, termination reason)를 캡처한다.
+
 **Qwen3-Coder**
 : Alibaba의 235B MoE 코딩 특화 모델 (22B 활성, 128K 컨텍스트). SWE-bench에서 상용 모델에 근접하는 성능. Apache 2.0 라이선스.
 
@@ -126,6 +141,9 @@ description: AI 시스템 2026 강의 주요 용어 정의
 **Software 3.0 (소프트웨어 3.0)**
 : Andrej Karpathy가 제안한 개념. 프로그래머가 코드를 직접 작성하는 대신 AI 에이전트를 지휘(conduct)하는 패러다임. Software 1.0(수동 코딩), Software 2.0(신경망 학습), Software 3.0(에이전트 오케스트레이션)으로 진화한다.
 
+**Task Packet (태스크 패킷)**
+: 에이전트에게 자연어 프롬프트 대신 구조화된 형식으로 작업을 전달하는 명세. objective(목표), scope(범위: Workspace/Module/SingleFile), branch_policy(브랜치 전략), acceptance_tests(수락 기준), escalation_policy(에스컬레이션 정책) 등을 포함한다. 로깅, 재시도, 에이전트 간 계약 명확화에 유리.
+
 **TBAC (Task-Based Access Control)**
 : 에이전트의 작업 목적 단위로 도구 접근을 제어하는 패러다임. Tasks → Tools → Transactions 3계층으로 구성된다. RBAC/ABAC의 "누가"보다 "어떤 작업"이 중요한 에이전트 환경에 적합하다. 변수 치환 엔진이 `mcp.*`, `jwt.*` 네임스페이스를 지원하여 동적 정책 평가가 가능하다.
 
@@ -135,8 +153,17 @@ description: AI 시스템 2026 강의 주요 용어 정의
 **Telemetry (텔레메트리)**
 : 실행 중인 시스템의 성능 지표(메트릭), 로그, 추적(트레이스) 데이터를 실시간으로 수집하는 기술.
 
+**Tool Surface (도구 표면)**
+: 에이전트가 접근 가능한 도구의 전체 집합. Claude Code에서는 Base(40개 빌트인) + Plugin(사용자 설치) + Runtime(MCP 서버 동적 등록) 3레이어로 구성된다. 상위 레이어가 하위와 이름 충돌 시 등록이 거부되며, simple mode에서는 3개로 축소된다.
+
+**ToolSpec**
+: Claude Code에서 도구 하나를 정의하는 단위. 이름(name), 설명(description), JSON input schema, 필요 퍼미션 레벨(required_permission)을 포함한다. 시스템 프롬프트에 도구 목록으로 삽입되어 LLM이 어떤 도구를 쓸 수 있는지 인식하게 한다.
+
 **Triple Gate Pattern (3중 게이트 패턴)**
 : AI Gateway → MCP Gateway → API Gateway의 3중 방어 아키텍처. 1차 AI 게이트웨이가 프롬프트 인젝션/PII를 필터링하고, 2차 MCP 게이트웨이가 TBAC 인가를 수행하며, 3차 API 게이트웨이가 rate limiting을 적용한다. 각 게이트가 독립적 관심사를 담당하여 단일 장애점을 방지한다.
 
 **vLLM**
 : 오픈소스 고처리량 LLM 추론 라이브러리. PagedAttention 알고리즘으로 GPU 메모리 효율성을 극대화.
+
+**Workspace Boundary (워크스페이스 경계)**
+: 파일 쓰기가 허용되는 디렉토리 경계. Claude Code의 Permission Enforcer가 symlink escape, `../` 탈출, canonical path 비교로 경계를 검증한다. WorkspaceWrite 모드에서 이 경계 밖 쓰기를 시도하면 사유와 함께 거부된다.
