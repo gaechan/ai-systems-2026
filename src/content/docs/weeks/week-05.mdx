@@ -290,6 +290,48 @@ VS Code Copilot은 2026년에 **3계층 메모리**(user/repository/session)를 
 
 ---
 
+### Part 7: 토큰 효율적 데이터 직렬화
+
+에이전트가 LLM에 구조화된 데이터를 보낼 때, 직렬화 포맷에 따라 토큰 소비가 **2~3배** 차이난다. 동일한 50명 사용자 목록을 7가지 포맷으로 직렬화한 실험 결과:
+
+| 포맷 | 토큰 수 | LLM 정확도 | 적합 상황 |
+|------|--------|-----------|----------|
+| CSV | ~800 | 44.3% | 순수 테이블 (정확도 주의) |
+| Markdown-KV | ~950 | **60.7%** | 단순 키-값 검색 |
+| TOON | 993 | 76.4% | 균일 배열 데이터 |
+| JSON (compact) | ~1,100 | 73.7% | **범용 — 가장 안전한 균형점** |
+| JSON (pretty) | 1,481 | 75.0% | 인간 가독성 필요 시 |
+| YAML | 1,710 | 74.5% | 중첩 설정, 프롬프트 구조화 |
+| XML | 2,690 | 72.1% | 레거시 시스템 연동 |
+
+<Aside type="caution" title="토큰 효율 ≠ 최적 포맷">
+토큰 효율과 정확도는 종종 **역상관**한다. CSV가 토큰 최소이지만 정확도 최하(44.3%). Tam et al. (2024, "Let Me Speak Freely?")는 포맷 제약 자체가 LLM 추론 성능을 **10-15% 저하**시킬 수 있다고 보고했다. "가장 적은 토큰 = 가장 좋은 포맷"이 아니다.
+</Aside>
+
+#### TOON — 토큰 최적화 직렬화의 한 사례
+
+TOON (Token Oriented Object Notation, 2025)은 JSON의 구조를 유지하되 따옴표, 중괄호, 쉼표를 제거하고, 균일 배열을 CSV식 테이블로 표현한다. GitHub 23.7K stars, npm 1.6M/월 다운로드로 커뮤니티 관심이 실재한다.
+
+```
+// TOON 예시: 균일 배열 → 헤더 + 행 형식
+users[3]{id,name,email}:
+  1,Alice,alice@example.com
+  2,Bob,bob@example.com
+  3,Carol,carol@example.com
+```
+
+**강점**: 균일 배열에서 pretty JSON 대비 **40-60%** 토큰 절감.
+**한계**: 비균일/중첩 데이터에서 compact JSON보다 **15-20% 더 클 수 있음**. Spec이 Working Draft(v3.0, 3주 만에 v0.8→v3.0)이고, LLM이 TOON으로 훈련되지 않아 프롬프트에 포맷 설명이 필요하다.
+
+#### 실무 권장
+
+- **기본값**: compact JSON — 모든 LLM이 이해하고, 생태계가 성숙. pretty JSON 대비 25-40% 절감.
+- **대규모 균일 테이블(100+ rows)**: TOON 또는 CSV 검토 — 단, 정확도 트레이드오프 측정 필수.
+- **API 기반 구조화 출력**: function calling / structured output API가 있으면 그것이 최적 (Microsoft 측정: JSON 대비 **42%** 절감).
+- **7주차 멀티에이전트**: 에이전트 간 아티팩트를 compact JSON으로 설계. [Week 7 아티팩트 핸드오프](/weeks/week-07/#아티팩트-기반-핸드오프-설계) 참조.
+
+---
+
 ### 강의 중 토론 질문
 
 1. **1M 토큰 컨텍스트가 있으면 Context Rot은 해결되는가?** Chroma 연구 데이터를 근거로 답하라.
@@ -351,48 +393,6 @@ VS Code Copilot은 2026년에 **3계층 메모리**(user/repository/session)를 
 4. 상태 추적 시스템 (`fix_plan.md` + `claude-progress.txt`) 동작 증명
 
 </div>
-
----
-
-### Part 6: 토큰 효율적 데이터 직렬화
-
-에이전트가 LLM에 구조화된 데이터를 보낼 때, 직렬화 포맷에 따라 토큰 소비가 **2~3배** 차이난다. 동일한 50명 사용자 목록을 7가지 포맷으로 직렬화한 실험 결과:
-
-| 포맷 | 토큰 수 | LLM 정확도 | 적합 상황 |
-|------|--------|-----------|----------|
-| CSV | ~800 | 44.3% | 순수 테이블 (정확도 주의) |
-| Markdown-KV | ~950 | **60.7%** | 단순 키-값 검색 |
-| TOON | 993 | 76.4% | 균일 배열 데이터 |
-| JSON (compact) | ~1,100 | 73.7% | **범용 — 가장 안전한 균형점** |
-| JSON (pretty) | 1,481 | 75.0% | 인간 가독성 필요 시 |
-| YAML | 1,710 | 74.5% | 중첩 설정, 프롬프트 구조화 |
-| XML | 2,690 | 72.1% | 레거시 시스템 연동 |
-
-<Aside type="caution" title="토큰 효율 ≠ 최적 포맷">
-토큰 효율과 정확도는 종종 **역상관**한다. CSV가 토큰 최소이지만 정확도 최하(44.3%). Tam et al. (2024, "Let Me Speak Freely?")는 포맷 제약 자체가 LLM 추론 성능을 **10-15% 저하**시킬 수 있다고 보고했다. "가장 적은 토큰 = 가장 좋은 포맷"이 아니다.
-</Aside>
-
-#### TOON — 토큰 최적화 직렬화의 한 사례
-
-TOON (Token Oriented Object Notation, 2025)은 JSON의 구조를 유지하되 따옴표, 중괄호, 쉼표를 제거하고, 균일 배열을 CSV식 테이블로 표현한다. GitHub 23.7K stars, npm 1.6M/월 다운로드로 커뮤니티 관심이 실재한다.
-
-```
-// TOON 예시: 균일 배열 → 헤더 + 행 형식
-users[3]{id,name,email}:
-  1,Alice,alice@example.com
-  2,Bob,bob@example.com
-  3,Carol,carol@example.com
-```
-
-**강점**: 균일 배열에서 pretty JSON 대비 **40-60%** 토큰 절감.
-**한계**: 비균일/중첩 데이터에서 compact JSON보다 **15-20% 더 클 수 있음**. Spec이 Working Draft(v3.0, 3주 만에 v0.8→v3.0)이고, LLM이 TOON으로 훈련되지 않아 프롬프트에 포맷 설명이 필요하다.
-
-#### 실무 권장
-
-- **기본값**: compact JSON — 모든 LLM이 이해하고, 생태계가 성숙. pretty JSON 대비 25-40% 절감.
-- **대규모 균일 테이블(100+ rows)**: TOON 또는 CSV 검토 — 단, 정확도 트레이드오프 측정 필수.
-- **API 기반 구조화 출력**: function calling / structured output API가 있으면 그것이 최적 (Microsoft 측정: JSON 대비 **42%** 절감).
-- **7주차 멀티에이전트**: 에이전트 간 아티팩트를 compact JSON으로 설계. [Week 7 아티팩트 핸드오프](/weeks/week-07/#아티팩트-기반-핸드오프-설계) 참조.
 
 ---
 
