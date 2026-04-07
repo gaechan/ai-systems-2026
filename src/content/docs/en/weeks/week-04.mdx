@@ -565,7 +565,7 @@ Running a small model many times is often more economical than running a large m
 
 Parts 1–5 covered the principles of the loop. Now we turn to the practical techniques for running loops **faster, safer, and at scale**. The 42 tips that Claude Code creator Boris Cherny released over January–February 2026 are not individual tricks — they form a **stack** in which each layer presupposes the one below. Understanding this stack lets you push Ralph loop throughput from single digits to double digits.
 
-#### 6.1 Parallel Sessions — Developer-Level Multiplexing
+#### Parallel Sessions — Developer-Level Multiplexing
 
 Boris runs 5 Claude Code instances in his terminal and 5–10 more on claude.ai/code simultaneously. This is not a multi-agent pipeline. It is one developer **supervising multiple loops at the same time** — real-world parallelism.
 
@@ -591,7 +591,7 @@ The key is that **each instance handles an independent task**. There is no inter
 - Beyond 5 sessions, supervision overhead exceeds the productivity gain. Boris's rule of thumb: "terminal 5 + web 5–10."
 </Aside>
 
-#### 6.2 The `--worktree` Flag — Native Isolation
+#### The `--worktree` Flag — Native Isolation
 
 In Part 2 we saw that `/loop` automatically creates a worktree. The `--worktree` flag extends this isolation to **ad-hoc sessions**.
 
@@ -632,7 +632,7 @@ done
 
 `/loop`'s worktree is optimized for **time-based iteration**; `--worktree` is optimized for **parallel task distribution**. The two are complementary.
 
-#### 6.3 `/sandbox` — Trust-Based Isolation
+#### `/sandbox` — Trust-Based Isolation
 
 The MIG we learned in Week 3 provided **GPU compute isolation** — one student's OOM cannot propagate to another. `/sandbox` isolates BashTool's **file and network access**, providing a different dimension of protection.
 
@@ -649,7 +649,7 @@ Boris's core insight: *"When you trust the containment, you accept edits faster.
 MIG isolates hardware; `/sandbox` isolates software. When both layers operate together, loop isolation is complete: running a Ralph loop in `/sandbox` mode inside a MIG slice on the DGX keeps both GPU resources and the filesystem safe.
 </Aside>
 
-#### 6.4 Stack Philosophy — Layers Build on Each Other
+#### Stack Philosophy — Layers Build on Each Other
 
 What makes Boris's 42 tips pedagogically valuable is that they form a **stack, not a menu**. Each layer presupposes the one beneath it:
 
@@ -695,7 +695,7 @@ Using an upper layer without the lower one will fail. Running parallel sessions 
 The Ralph loop harness from the next section (backpressure + GC + AGENTS.md) ensures **quality for a single loop**. The Boris stack builds on top of it to add **throughput and isolation across loops**. Ralph answers "how do I run one loop well?"; Boris answers "how do I safely run ten loops at once?"
 </Aside>
 
-#### 6.5 Agentmaxxing — Multi-Tool Parallel Execution
+#### Agentmaxxing — Multi-Tool Parallel Execution
 
 Starting in early 2026, an extreme parallelization strategy called "Agentmaxxing" emerged: deploying **multiple AI coding tools simultaneously** in a single repo.
 
